@@ -3,6 +3,8 @@ from __future__ import absolute_import, division, print_function
 
 __all__ = [
     'setup_construct_maya',
+    'register',
+    'unregister',
 ]
 
 import os
@@ -39,3 +41,13 @@ def setup_construct_maya(app):
     app['env']['MAYA_SCRIPT_PATH'] = scpath
     app['env']['PYTHONPATH'] = pypath
     return app
+
+
+def register(cons):
+
+    cons.action_hub.connect('launch.maya*', tasks.setup_construct_maya)
+
+
+def unregister(cons):
+
+    cons.action_hub.disconnect('launch.maya*', tasks.setup_construct_maya)
