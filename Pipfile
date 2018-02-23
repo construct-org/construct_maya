@@ -1,0 +1,24 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+
+[dev-packages]
+
+termcolor = "*"
+fire = "*"
+colorama = "*"
+fstrings = "*"
+sphinx = "*"
+sphinx-rtd-theme = "*"
+nose = "*"
+"07f39e2" = {path = "../../fsfs", editable = true}
+"ae8edad" = {path = "../construct", editable = true}
+"93379b8" = {path = "../construct_launcher", editable = true}
+
+
+[packages]
+
+fstrings = "*"
