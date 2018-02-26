@@ -45,9 +45,9 @@ def setup_construct_maya(app):
 
 def register(cons):
 
-    cons.action_hub.connect('launch.maya*', tasks.setup_construct_maya)
+    cons.action_hub.connect('launch.maya*', setup_construct_maya)
 
 
 def unregister(cons):
 
-    cons.action_hub.disconnect('launch.maya*', tasks.setup_construct_maya)
+    cons.action_hub.disconnect('launch.maya*', setup_construct_maya)
