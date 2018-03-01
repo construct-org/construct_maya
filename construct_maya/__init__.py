@@ -39,3 +39,15 @@ def unregister(cons):
     if ctx.host == 'maya':
         # Tasks available only from within maya
         pass
+
+
+def initialize():
+
+    print('[construct] Initializing construct_maya')
+    import construct
+    construct.init()
+
+    ctx = construct.get_context()
+    if ctx.workspace:
+        print('[construct] Setting workspace to ' + ctx.workspace.path)
+        set_workspace(ctx.workspace.path)

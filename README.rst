@@ -11,4 +11,4 @@ Installation
 
 .. code-block:: console
 
-    $ pip install git+ssh://git@github.com/construct-org/construct_launcher.git
+    $ pip install git+ssh://git@github.com/construct-org/construct_maya.git
