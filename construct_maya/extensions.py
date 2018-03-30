@@ -27,7 +27,7 @@ class Maya(Extension):
         from construct_launcher.constants import BEFORE_LAUNCH
 
         self.add_task(
-            'launch.*',
+            'launch.maya*',
             setup_construct_maya,
             priority=BEFORE_LAUNCH
         )
