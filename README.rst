@@ -3,7 +3,7 @@ construct_maya
 ==============
 
 Autodesk Maya integration for Construct. Initializes Construct when Maya
-launches and provides load, save and publish action tasks for various file types.
+launches and provides load, save and publish tasks for various file types.
 
 
 Installation

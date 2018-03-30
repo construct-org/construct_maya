@@ -1,4 +1,19 @@
 # -*- coding: utf-8 -*-
+from __future__ import absolute_import
+
+__all__ = [
+    'save_file',
+    'open_file',
+    'get_scene_selection',
+    'set_scene_selection',
+    'get_workspace',
+    'set_workspace',
+    'get_filepath',
+    'get_filename',
+    'get_frame_range',
+    'set_frame_range',
+]
+
 import os
 
 
@@ -15,8 +30,21 @@ def open_file(file):
     cmds.file(file, open=True)
 
 
-def active_selection():
+def get_scene_selection():
+    from maya import cmds
+
     return cmds.ls(sl=True, long=True)
+
+
+def set_scene_selection(selection):
+    from maya import cmds
+
+    cmds.select(selection, replace=True)
+
+
+def get_workspace():
+    from maya import cmds
+    return cmds.workspace(q=True, openWorkspace=True)
 
 
 def set_workspace(directory):
@@ -29,6 +57,12 @@ def get_filepath():
     from maya import cmds
 
     return cmds.file(q=True, sceneName=True)
+
+
+def get_filename():
+    from maya import cmds
+
+    return os.path.basename(cmds.file(q=True, sceneName=True))
 
 
 def get_frame_range():
