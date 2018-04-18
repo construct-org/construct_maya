@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
+import os
+import logging
 import construct
 from construct_maya import api
 
@@ -8,7 +10,7 @@ _log = logging.getLogger('construct.maya.callbacks')
 _callback_ids = []
 
 
-def after_open():
+def after_open(*args):
     '''kAfterOpen callback'''
 
     _log.debug('after_open')
@@ -16,7 +18,7 @@ def after_open():
     # TODO:
 
 
-def after_save():
+def after_save(*args):
     '''kAfterSave callback'''
 
     _log.debug('after_open')
