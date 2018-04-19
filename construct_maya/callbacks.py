@@ -25,7 +25,7 @@ def after_save(*args):
     set_context_to_maya_scene()
 
 
-def before_create_reference():
+def before_create_reference(*args):
     # TODO: Implement kBeforeCreateReference callback
     #       Ensure references are up to date
     _log.debug('before_create_reference')
