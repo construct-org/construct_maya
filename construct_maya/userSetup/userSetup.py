@@ -2,14 +2,16 @@
 from __future__ import absolute_import, division, print_function
 import logging
 import construct
+from Qt import QtWidgets
+from functools import partial
 from maya.utils import executeDeferred
-from construct_ui import ActionMenu
-from construct_maya import api, callbacks
-from construct_maya.ui import get_maya_menu_bar
+from construct_maya import api, callbacks, ui
+
+_log = logging.getLogger('construct.maya.userSetup')
+construct_menu = None
 
 
 def setup():
-    _log = logging.getLogger('construct.maya.userSetup')
     _log.debug('Configuring Construct for Maya!')
     construct.init()
 
@@ -22,8 +24,7 @@ def setup():
     callbacks.register()
 
     _log.debug('Creating Construct menu...')
-    menubar = get_maya_menu_bar()
-    menubar.addMenu(ActionMenu('Construct', menubar))
+    ui.setup_construct_menu()
 
 
 executeDeferred(setup)
