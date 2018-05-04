@@ -3,7 +3,6 @@ from __future__ import absolute_import
 import os
 import logging
 import construct
-from construct_maya import api
 
 
 _log = logging.getLogger('construct.maya.callbacks')
@@ -34,7 +33,8 @@ def before_create_reference(*args):
 def set_context_to_maya_scene():
     '''Sets context to the currently open Maya scene.'''
 
-    full_path = api.get_filepath()
+    host = construct.get_host()
+    full_path = host.get_filepath()
     path = os.path.dirname(full_path)
 
     new_ctx = construct.Context.from_path(path)
@@ -51,7 +51,7 @@ def set_context_to_maya_scene():
     for _ in range(5):
         if os.path.isfile(path + '/workspace.mel'):
             _log.debug('Setting Maya workspace %s' % path)
-            api.set_workspace(path)
+            host.set_workspace(path)
             break
         path = os.path.dirname(path)
 
