@@ -14,7 +14,6 @@ def after_open(*args):
 
     _log.debug('after_open')
     set_context_to_maya_scene()
-    # TODO:
 
 
 def after_save(*args):
@@ -34,10 +33,11 @@ def set_context_to_maya_scene():
     '''Sets context to the currently open Maya scene.'''
 
     host = construct.get_host()
-    full_path = host.get_filepath()
-    path = os.path.dirname(full_path)
+    path = host.get_filepath()
 
     new_ctx = construct.Context.from_path(path)
+    new_ctx.file = path
+
     if new_ctx.workspace:
         _log.debug('Setting context to %s' % path)
         construct.set_context(new_ctx)
