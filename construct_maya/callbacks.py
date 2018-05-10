@@ -44,7 +44,7 @@ def set_context_to_maya_scene():
     else:
         _log.debug(
             'Not setting context. '
-            'Script is not in a construct workspace...'
+            'Maya file is not in a construct workspace...'
         )
 
     # Look for a workspace.mel

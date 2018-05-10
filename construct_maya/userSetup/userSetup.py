@@ -5,7 +5,7 @@ import construct
 from Qt import QtWidgets
 from functools import partial
 from maya.utils import executeDeferred
-from construct_maya import callbacks, ui
+from construct_maya import callbacks, menus
 from construct_ui import resources
 
 _log = logging.getLogger('construct.maya.userSetup')
@@ -26,7 +26,7 @@ def setup():
     callbacks.register()
 
     _log.debug('Creating Construct menu...')
-    ui.setup_construct_menu()
+    menus.setup_construct_menu()
 
     if ctx.workspace and not host.get_filename():
         action = construct.actions.get('file.open')

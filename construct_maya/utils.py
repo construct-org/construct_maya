@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 import logging
+from functools import partial, wraps
 
 
 _log = logging.getLogger('construct.maya.utils')
@@ -58,3 +59,5 @@ def remove_unknown_plugins():
         remove_plugin_nodes(plugin)
         remove_unknown_plugin_nodes(plugin)
         cmds.unknownPlugin(plugin, remove=True)
+
+

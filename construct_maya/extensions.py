@@ -8,6 +8,7 @@ from construct.extension import HostExtension
 from construct_maya.tasks import (
     setup_construct_maya
 )
+from construct_launcher.constants import BEFORE_LAUNCH
 
 
 class Maya(HostExtension):
@@ -20,20 +21,28 @@ class Maya(HostExtension):
         return True
 
     def load(self):
-
         self.add_template_path(join(dirname(__file__), 'templates'))
-
-        # Extend cpenv_launcher to activate cpenv modules before launch
-        from construct_launcher.constants import BEFORE_LAUNCH
-
         self.add_task(
             'launch.maya*',
             setup_construct_maya,
             priority=BEFORE_LAUNCH
         )
 
+    def modified(self):
+        from maya import cmds
+
+        return (
+            cmds.file(q=True, modified=True) and
+            self.get_filename()
+        )
+
     def save_file(self, file):
         from maya import cmds
+        from construct_ui.dialogs import ask
+
+        if self.modified():
+            if ask('Unsaved changes', 'Would you like to save?'):
+                cmds.file(save=True, force=True)
 
         cmds.file(rename=file)
         cmds.file(save=True)
@@ -42,18 +51,11 @@ class Maya(HostExtension):
         from maya import cmds
         from construct_ui.dialogs import ask
 
-        scene_modified = (
-            cmds.file(q=True, modified=True) and
-            self.get_filename()
-        )
-        if scene_modified:
+        if self.modified():
             if ask('Unsaved changes', 'Would you like to save?'):
                 cmds.file(save=True, force=True)
-            else:
-                cmds.file(new=True, force=True)
-        else:
-            cmds.file(new=True, force=True)
 
+        cmds.file(new=True, force=True)
         cmds.file(file, open=True)
 
     def get_selection(self):
@@ -98,12 +100,10 @@ class Maya(HostExtension):
 
         cmds.playbackOptions(minTime=start_frame, maxTime=end_frame)
 
-    def get_qt_parent(self, widget_cls=None):
+    def get_qt_parent(self):
         from Qt import QtWidgets
-        from construct_maya import ui
+        app = QtWidgets.QApplication.instance()
 
-        return ui.get_maya_window(widget_cls)
-
-    def get_qt_loop(self):
-        from Qt import QtWidgets
-        return QtWidgets.QApplication.instance()
+        for widget in app.topLevelWidgets():
+            if widget.objectName() == 'MayaWindow':
+                return widget
