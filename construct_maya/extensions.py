@@ -38,11 +38,6 @@ class Maya(HostExtension):
 
     def save_file(self, file):
         from maya import cmds
-        from construct_ui.dialogs import ask
-
-        if self.modified():
-            if ask('Unsaved changes', 'Would you like to save?'):
-                cmds.file(save=True, force=True)
 
         cmds.file(rename=file)
         cmds.file(save=True)

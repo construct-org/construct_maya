@@ -1,8 +1,12 @@
 # -*- coding: utf-8 -*-
-from __future__ import absolute_import
+from __future__ import absolute_import, print_function
 import os
+import re
 import logging
 import construct
+from construct.utils import unipath
+from construct_ui.dialogs import ask
+import glob
 
 
 _log = logging.getLogger('construct.maya.callbacks')
@@ -26,7 +30,39 @@ def after_save(*args):
 def before_create_reference(*args):
     # TODO: Implement kBeforeCreateReference callback
     #       Ensure references are up to date
-    _log.debug('before_create_reference')
+    _log.debug('before_create_reference %s' % args)
+
+
+def before_create_reference_check(mfile, client_data):
+    # TODO: Implement kBeforeCreateReferenceCheck callback
+    #       Ensure references are up to date
+    _log.debug('before_create_reference_check')
+    reference = unipath(mfile.expandedFullName())
+    reference_name = os.path.basename(reference)
+    latest = get_latest_version(reference)
+    latest_name = os.path.basename(latest)
+    if reference != latest:
+        update = ask(
+            'Found new version ' + latest_name,
+            'Would you like to update?',
+            title='Creating reference ' + reference_name
+        )
+        if update:
+            mfile.setRawFullName(latest)
+    print(reference)
+    print(latest)
+    return True
+
+
+def get_latest_version(filepath):
+    root = os.path.dirname(filepath)
+    version = re.findall(r'\d+', filepath)[-1]
+    name_pattern = filepath.replace(version, '*')
+    path_pattern = unipath(root, name_pattern)
+    versions = glob.glob(path_pattern)
+    versions.sort()
+    return unipath(versions[-1])
+
 
 
 def set_context_to_maya_scene():
@@ -60,24 +96,31 @@ def register():
     '''Register scene callbacks'''
 
     from maya.api import OpenMaya
+    MSceneMessage = OpenMaya.MSceneMessage
 
-    after_open_id = OpenMaya.MSceneMessage.addCallback(
-        OpenMaya.MSceneMessage.kAfterOpen,
+    after_open_id = MSceneMessage.addCallback(
+        MSceneMessage.kAfterOpen,
         after_open
     )
     _callback_ids.append(after_open_id)
 
-    after_save_id = OpenMaya.MSceneMessage.addCallback(
-        OpenMaya.MSceneMessage.kAfterSave,
+    after_save_id = MSceneMessage.addCallback(
+        MSceneMessage.kAfterSave,
         after_save
     )
     _callback_ids.append(after_save_id)
 
-    before_create_reference_id = OpenMaya.MSceneMessage.addCallback(
-        OpenMaya.MSceneMessage.kBeforeCreateReference,
+    before_create_reference_id = MSceneMessage.addCallback(
+        MSceneMessage.kBeforeCreateReference,
         before_create_reference
     )
     _callback_ids.append(before_create_reference_id)
+
+    before_create_reference_check_id = MSceneMessage.addCheckFileCallback(
+        MSceneMessage.kBeforeCreateReferenceCheck,
+        before_create_reference_check
+    )
+    _callback_ids.append(before_create_reference_check_id)
 
 
 def unregister():
