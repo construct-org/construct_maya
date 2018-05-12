@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import absolute_import
 import logging
-from functools import partial, wraps
 
 
 _log = logging.getLogger('construct.maya.utils')
