@@ -32,7 +32,7 @@ class Maya(HostExtension):
         from maya import cmds
 
         return (
-            cmds.file(q=True, modified=True) and
+            cmds.file(query=True, modified=True) and
             self.get_filename()
         )
 
@@ -51,12 +51,12 @@ class Maya(HostExtension):
                 cmds.file(save=True, force=True)
 
         cmds.file(new=True, force=True)
-        cmds.file(file, open=True)
+        cmds.file(file, open=True, ignoreVersion=True)
 
     def get_selection(self):
         from maya import cmds
 
-        return cmds.ls(sl=True, long=True)
+        return cmds.ls(selection=True, long=True)
 
     def set_selection(self, selection):
         from maya import cmds
@@ -65,7 +65,7 @@ class Maya(HostExtension):
 
     def get_workspace(self):
         from maya import cmds
-        return cmds.workspace(q=True, openWorkspace=True)
+        return cmds.workspace(query=True, openWorkspace=True)
 
     def set_workspace(self, directory):
         from maya import cmds
@@ -75,19 +75,19 @@ class Maya(HostExtension):
     def get_filepath(self):
         from maya import cmds
 
-        return cmds.file(q=True, sceneName=True)
+        return cmds.file(query=True, sceneName=True)
 
     def get_filename(self):
         from maya import cmds
 
-        return basename(cmds.file(q=True, sceneName=True))
+        return basename(cmds.file(query=True, sceneName=True))
 
     def get_frame_range(self):
         from maya import cmds
 
         return [
-            cmds.playbackOptions(q=True, minTime=True),
-            cmds.playbackOptions(q=True, maxTime=True)
+            cmds.playbackOptions(query=True, minTime=True),
+            cmds.playbackOptions(query=True, maxTime=True)
         ]
 
     def set_frame_range(self, start_frame, end_frame):

@@ -34,8 +34,6 @@ def before_create_reference(*args):
 
 
 def before_create_reference_check(mfile, client_data):
-    # TODO: Implement kBeforeCreateReferenceCheck callback
-    #       Ensure references are up to date
     _log.debug('before_create_reference_check')
     reference = unipath(mfile.expandedFullName())
     reference_name = os.path.basename(reference)
@@ -49,8 +47,6 @@ def before_create_reference_check(mfile, client_data):
         )
         if update:
             mfile.setRawFullName(latest)
-    print(reference)
-    print(latest)
     return True
 
 
@@ -62,7 +58,6 @@ def get_latest_version(filepath):
     versions = glob.glob(path_pattern)
     versions.sort()
     return unipath(versions[-1])
-
 
 
 def set_context_to_maya_scene():
