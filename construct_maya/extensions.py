@@ -47,7 +47,7 @@ class Maya(HostExtension):
         from construct_ui.dialogs import ask
 
         if self.modified():
-            if ask('Unsaved changes', 'Would you like to save?'):
+            if ask('Would you like to save?', title='Unsaved changes'):
                 cmds.file(save=True, force=True)
 
         cmds.file(new=True, force=True)

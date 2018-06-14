@@ -5,7 +5,7 @@ import re
 import logging
 import construct
 from construct.utils import unipath
-from construct_ui.dialogs import ask
+from construct_ui import dialogs
 import glob
 
 
@@ -27,12 +27,6 @@ def after_save(*args):
     set_context_to_maya_scene()
 
 
-def before_create_reference(*args):
-    # TODO: Implement kBeforeCreateReference callback
-    #       Ensure references are up to date
-    _log.debug('before_create_reference %s' % args)
-
-
 def before_create_reference_check(mfile, client_data):
     _log.debug('before_create_reference_check')
     reference = unipath(mfile.expandedFullName())
@@ -40,10 +34,10 @@ def before_create_reference_check(mfile, client_data):
     latest = get_latest_version(reference)
     latest_name = os.path.basename(latest)
     if reference != latest:
-        update = ask(
-            'Found new version ' + latest_name,
-            'Would you like to update?',
-            title='Creating reference ' + reference_name
+        update = dialogs.ask(
+            'A newer version is available, would you like to update?',
+            latest_name,
+            title='Referencing ' + reference_name + '...'
         )
         if update:
             mfile.setRawFullName(latest)
@@ -72,6 +66,7 @@ def set_context_to_maya_scene():
     if new_ctx.workspace:
         _log.debug('Setting context to %s' % path)
         construct.set_context(new_ctx)
+        new_ctx.to_env()
     else:
         _log.debug(
             'Not setting context. '
@@ -104,12 +99,6 @@ def register():
         after_save
     )
     _callback_ids.append(after_save_id)
-
-    before_create_reference_id = MSceneMessage.addCallback(
-        MSceneMessage.kBeforeCreateReference,
-        before_create_reference
-    )
-    _callback_ids.append(before_create_reference_id)
 
     before_create_reference_check_id = MSceneMessage.addCheckFileCallback(
         MSceneMessage.kBeforeCreateReferenceCheck,

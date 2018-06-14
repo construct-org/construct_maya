@@ -1,0 +1,10 @@
+
+Release Notes
+=============
+
+0.1.9 (06-14-2018)
+
+* Push context to environment variables on scene changed
+* Initialize resources in userSetup
+* Revise create reference dialog
+* Revise save changes dialog

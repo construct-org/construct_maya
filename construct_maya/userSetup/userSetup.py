@@ -15,6 +15,7 @@ construct_menu = None
 def setup():
     _log.debug('Configuring Construct for Maya!')
     construct.init()
+    resources.init()
 
     ctx = construct.get_context()
     host = construct.get_host()
@@ -33,7 +34,7 @@ def setup():
         parent = host.get_qt_parent()
         form_cls = construct.get_form(action.identifier)
         form = form_cls(action, ctx, parent)
-        form.setStyleSheet(resources.style('dark'))
+        form.setStyleSheet(resources.style(':/styles/dark'))
         form.show()
 
 
