@@ -87,13 +87,20 @@ class Maya(HostExtension):
 
         return [
             cmds.playbackOptions(query=True, minTime=True),
-            cmds.playbackOptions(query=True, maxTime=True)
+            cmds.playbackOptions(query=True, animationStartTime=True),
+            cmds.playbackOptions(query=True, animationEndTime=True),
+            cmds.playbackOptions(query=True, maxTime=True),
         ]
 
-    def set_frame_range(self, start_frame, end_frame):
+    def set_frame_range(self, min, start, end, max):
         from maya import cmds
 
-        cmds.playbackOptions(minTime=start_frame, maxTime=end_frame)
+        cmds.playbackOptions(
+            minTime=min,
+            animationStartTime=start,
+            animationEndTime=end,
+            maxTime=max
+        )
 
     def get_qt_parent(self):
         from Qt import QtWidgets
