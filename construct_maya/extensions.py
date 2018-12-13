@@ -82,6 +82,40 @@ class Maya(HostExtension):
 
         return basename(cmds.file(query=True, sceneName=True))
 
+    def get_frame_rate(self):
+        from maya import cmds
+
+        unit = cmds.currentUnit(query=True, time=True)
+        fps = {
+            'game': '15fps',
+            'film': '24fps',
+            'pal': '25fps',
+            'ntsc': '30fps',
+            'show': '48fps',
+            'palf': '50fps',
+            'ntscf': '60fps',
+        }.get(unit, unit)
+        return float(fps.rstrip('fps'))
+
+    def set_frame_rate(self, fps):
+        from maya import cmds
+
+        whole, decimal = str(float(fps)).split('.')
+        if int(decimal) == 0:
+            fps = whole + 'fps'
+        else:
+            fps = str(fps) + 'fps'
+        unit = {
+            'game': '15fps',
+            'film': '24fps',
+            'pal': '25fps',
+            'ntsc': '30fps',
+            'show': '48fps',
+            'palf': '50fps',
+            'ntscf': '60fps',
+        }.get(fps, fps)
+        cmds.currentUnit(time=unit)
+
     def get_frame_range(self):
         from maya import cmds
 
