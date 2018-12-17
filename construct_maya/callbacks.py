@@ -61,8 +61,11 @@ def get_latest_version(filepath):
     # Okay let's get the latest version
     name_pattern = filepath.replace(version, '*')
     path_pattern = unipath(root, name_pattern)
-    versions = glob.glob(path_pattern)
-    versions.sort()
+    versions = sorted(glob.glob(path_pattern))
+
+    if not versions:
+        return filepath
+
     return unipath(versions[-1])
 
 
