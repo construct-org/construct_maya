@@ -29,6 +29,7 @@ def after_save(*args):
 
 def before_create_reference_check(mfile, client_data):
     _log.debug('before_create_reference_check')
+
     reference = unipath(mfile.expandedFullName())
     reference_name = os.path.basename(reference)
     latest = get_latest_version(reference)
@@ -41,16 +42,30 @@ def before_create_reference_check(mfile, client_data):
         )
         if update:
             mfile.setRawFullName(latest)
+
     return True
 
 
 def get_latest_version(filepath):
+    '''Returns latest version, or the original file if it is not versioned'''
+
     root = os.path.dirname(filepath)
-    version = re.findall(r'\d+', filepath)[-1]
+
+    # Check if this is a versioned file.
+    versions = re.findall(r'\d+', filepath)
+    if not versions:
+        return filepath
+    else:
+        version = versions[-1]
+
+    # Okay let's get the latest version
     name_pattern = filepath.replace(version, '*')
     path_pattern = unipath(root, name_pattern)
-    versions = glob.glob(path_pattern)
-    versions.sort()
+    versions = sorted(glob.glob(path_pattern))
+
+    if not versions:
+        return filepath
+
     return unipath(versions[-1])
 
 

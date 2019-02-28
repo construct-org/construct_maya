@@ -8,3 +8,4 @@ Release Notes
 * Initialize resources in userSetup
 * Revise create reference dialog
 * Revise save changes dialog
+* Remove kBeforeCreateReference callback
