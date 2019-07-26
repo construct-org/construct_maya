@@ -30,12 +30,12 @@ def setup():
     menus.setup_construct_menu()
 
     if ctx.workspace and not host.get_filename():
-        action = construct.actions.get('file.open')
-        parent = host.get_qt_parent()
-        form_cls = construct.get_form(action.identifier)
-        form = form_cls(action, ctx, parent)
-        form.setStyleSheet(resources.style(':/styles/dark'))
-        form.show()
+        if ctx.workspace.get_work_files():
+            action_identifier = 'file.open'
+        else:
+            action_identifier = 'file.save'
+
+        construct.show_form(action_identifier)
 
 
 executeDeferred(setup)
