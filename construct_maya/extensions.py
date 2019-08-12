@@ -14,7 +14,7 @@ from construct_launcher.constants import BEFORE_LAUNCH
 class Maya(HostExtension):
     '''Construct Autodesk Maya integration'''
 
-    name = 'Maya'
+    name = 'maya'
     attr_name = 'maya'
 
     def available(self, ctx):
@@ -65,6 +65,7 @@ class Maya(HostExtension):
 
     def get_workspace(self):
         from maya import cmds
+
         return cmds.workspace(query=True, openWorkspace=True)
 
     def set_workspace(self, directory):
