@@ -27,7 +27,7 @@ def setup():
     callbacks.register()
 
     _log.debug('Creating Construct menu...')
-    menus.setup_construct_menu()
+    menus.ConstructMenu.setup()
 
     if ctx.workspace and not host.get_filename():
         if ctx.workspace.get_work_files():
