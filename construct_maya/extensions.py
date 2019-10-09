@@ -5,10 +5,7 @@ __all__ = ['Maya']
 
 from os.path import join, dirname, basename
 from construct.extension import HostExtension
-from construct_maya.tasks import (
-    setup_construct_maya
-)
-from construct_launcher.constants import BEFORE_LAUNCH
+from construct_maya import tasks
 
 
 class Maya(HostExtension):
@@ -22,11 +19,8 @@ class Maya(HostExtension):
 
     def load(self):
         self.add_template_path(join(dirname(__file__), 'templates'))
-        self.add_task(
-            'launch.maya*',
-            setup_construct_maya,
-            priority=BEFORE_LAUNCH
-        )
+        self.add_task('launch.maya*', tasks.setup_construct_maya)
+        self.add_task('publish', tasks.flatten_references)
 
     def modified(self):
         from maya import cmds
