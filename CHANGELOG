@@ -2,6 +2,19 @@
 Release Notes
 =============
 
+0.1.13 (10-14-2019)
+
+* Always use type flag with cmds.file when saving
+
+0.1.12 (10-10-2019)
+
+* Add ConstructMenu class to hold a ref to QMenu
+
+    * Prevents QMenu from being garbage collected
+    * Fixes crash issue that was plaguing maya
+
+* Add flatten_references task to Publish Action
+
 0.1.9 (06-14-2018)
 
 * Push context to environment variables on scene changed

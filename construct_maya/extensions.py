@@ -3,9 +3,27 @@ from __future__ import absolute_import
 
 __all__ = ['Maya']
 
-from os.path import join, dirname, basename
+from os.path import join, dirname, basename, splitext
 from construct.extension import HostExtension
 from construct_maya import tasks
+
+
+FILE_TYPE_MAP = {
+    '.ma': 'mayaAscii',
+    '.mb': 'mayaBinary',
+    '.mel': 'mel',
+    '.obj': 'OBJ',
+    '.wav': 'audio',
+    '.aif': 'audio',
+    '.ai': 'Adobe(R) Illustrator(R)',
+    '.eps': 'EPS',
+    '.png': 'image',
+    '.jpeg': 'image',
+    '.jpg': 'image',
+    '.exr': 'image',
+    '.iff': 'image',
+    '.tiff': 'image',
+}
 
 
 class Maya(HostExtension):
@@ -34,7 +52,8 @@ class Maya(HostExtension):
         from maya import cmds
 
         cmds.file(rename=file)
-        cmds.file(save=True)
+        ext = splitext(file)[-1]
+        cmds.file(save=True, type=FILE_TYPE_MAP[ext])
 
     def open_file(self, file):
         from maya import cmds
