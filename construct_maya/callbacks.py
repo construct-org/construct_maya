@@ -46,6 +46,11 @@ def before_create_reference_check(mfile, client_data):
     return True
 
 
+def rreplace(string, search, repl, count=1):
+    modified = string[::-1].replace(search[::-1], repl[::-1], count)
+    return modified[::-1]
+
+
 def get_latest_version(filepath):
     '''Returns latest version, or the original file if it is not versioned'''
 
@@ -59,7 +64,7 @@ def get_latest_version(filepath):
         version = versions[-1]
 
     # Okay let's get the latest version
-    name_pattern = filepath.replace(version, '*')
+    name_pattern = rreplace(filepath, version, '*')
     path_pattern = unipath(root, name_pattern)
     versions = sorted(glob.glob(path_pattern))
 
